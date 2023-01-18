@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculatrice de devise</title>
+</head>
+<body>
+  <h1>Calculatrice de devise</h1>
+  <form>
+    <label for="amount">Montant:</label>
+    <input type="text" id="amount" name="amount">
+    <br>
+    <label for="from">De:</label>
+    <select id="from" name="from">
+      <option value="USD">USD</option>
+      <option value="EUR">EUR</option>
+      <option value="GBP">GBP</option>
+      <option value="BTC">BTC</option>
+    </select>
+    <br>
+    <label for="to">Vers:</label>
+    <select id="to" name="to">
+      <option value="USD">USD</option>
+      <option value="EUR">EUR</option>
+      <option value="GBP">GBP</option>
+      <option value="BTC">BTC</option>
+    </select>
+    <br><br>
+    <button type="button" onclick="calculate()">Calculer</button>
+  </form>
+  <br>
+  <p id="result"></p>
+  <script>
+    //Fonction pour calculer le taux de change
+    function calculate() {
+      //Récupération des valeurs saisies
+      var amount = document.getElementById("amount").value;
+      var from = document.getElementById("from").value;
+      var to = document.getElementById("to").value;
+      //Appel de l'API pour récupérer les taux de change
+      fetch("https://openexchangerates.org/api/latest.json?app_id=90bd98118c4d415592f825a091204d94")
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data) {
+          var rate = data.rates[to] / data.rates[from];
+          var result = amount * rate;
+          document.getElementById("result").innerHTML = "Taux de change: " + rate + "<br> Résultat: " + result + " " + to;
+        });
+    }
+  </script>
+</body>
+</html>
+
+
